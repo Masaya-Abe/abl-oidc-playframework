@@ -9,15 +9,16 @@ import play.api.mvc.Results._
 import play.api.libs.json.{JsError, JsSuccess}
 import cats.data.EitherT
 import cats.implicits._
-
 import java.security.KeyFactory
 import java.security.spec.X509EncodedKeySpec
 import java.util.Base64
+
 import scala.concurrent.duration._
 import org.jose4j.jwa.AlgorithmConstraints.ConstraintType
 import org.jose4j.jws.AlgorithmIdentifiers
 import org.jose4j.jwt.consumer.JwtConsumerBuilder
 import org.jose4j.jwx.JsonWebStructure
+import play.api.Logger
 
 
 // trait AuthenticateActionBuilder extends ActionBuilder[Request, AnyContent]
@@ -38,6 +39,7 @@ case class AuthenticateActionBuilder(
   val ws: WSClient
 )(implicit val executionContext: ExecutionContext) extends ActionBuilder[Request, AnyContent] {
 
+  private val logger                       = Logger(this.getClass())
   private val HEADER_AMZN_ACCESS_TOKEN     = "x-amzn-access-token"
   private val HEADER_AMZN_DATA_TOKEN       = "x-amzn-data-token"
   private val AMZN_PUBLIC_KEY_URL_TEMPLATE = "https://public-keys.auth.elb.ap-northeast-1.amazonaws.com/%s"
@@ -49,6 +51,9 @@ case class AuthenticateActionBuilder(
   def invokeBlock[A](request: Request[A], block: Request[A] => Future[Result]) = {
     val accessTokenOpt = request.headers.get(HEADER_AMZN_ACCESS_TOKEN)
     val dataTokenOpt   = request.headers.get(HEADER_AMZN_DATA_TOKEN)
+
+    logger.info(accessTokenOpt.getOrElse("access token empty"))
+    logger.info(dataTokenOpt.getOrElse("data token empty"))
 
     val authenticated = for {
       accessToken <- verifyAccessToken(accessTokenOpt)
