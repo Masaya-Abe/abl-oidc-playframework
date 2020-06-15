@@ -40,8 +40,8 @@ case class AuthenticateActionBuilder(
 )(implicit val executionContext: ExecutionContext) extends ActionBuilder[Request, AnyContent] {
 
   private val logger                       = Logger(this.getClass())
-  private val HEADER_AMZN_ACCESS_TOKEN     = "x-amzn-access-token"
-  private val HEADER_AMZN_DATA_TOKEN       = "x-amzn-data-token"
+  private val HEADER_AMZN_ACCESS_TOKEN     = "x-amzn-oidc-accesstoken"
+  private val HEADER_AMZN_DATA_TOKEN       = "x-amzn-oidc-data"
   private val AMZN_PUBLIC_KEY_URL_TEMPLATE = "https://public-keys.auth.elb.ap-northeast-1.amazonaws.com/%s"
   private val DATA_TOKEN_ISSUER            = "https://login.microsoftonline.com/5f27d3dd-8c3b-4aff-a9cd-cd48b34e1add/v2.0"
   private val GRAPH_API_URI_USER_ME        = "https://graph.microsoft.com/v1.0/me"
