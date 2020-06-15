@@ -89,7 +89,6 @@ case class AuthenticateActionBuilder(
 
       //val jwt = JWT.decode(token)
       //val kid = jwt.getKeyId()
-      println(kid)
 
       for {
         publicKey <- getPublicKey(kid)
@@ -147,6 +146,7 @@ case class AuthenticateActionBuilder(
 
   private def getUser(accessToken: String) = {
     val requestResult = ws.url(GRAPH_API_URI_USER_ME)
+      .withHttpHeaders("Authorization" -> "Bearer %s".format(accessToken))
       .withRequestTimeout(REQUEST_TIMEOUT)
       .get()
       .map { res => res.status match {

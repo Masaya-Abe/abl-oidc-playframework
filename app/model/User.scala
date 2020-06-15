@@ -7,13 +7,13 @@ import play.api.libs.functional.syntax._
 case class User(
   id:          String,
   displayName: String,
-  mail:        String
+  mail:        Option[String]
 )
 
 object User {
   implicit val userReads: Reads[User] = (
     (JsPath \ "id").read[String] and
     (JsPath \ "displayName").read[String] and
-    (JsPath \ "mail").read[String]
+    (JsPath \ "mail").readNullable[String]
   )(User.apply _)
 }
