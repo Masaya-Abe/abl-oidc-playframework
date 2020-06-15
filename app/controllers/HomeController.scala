@@ -29,7 +29,7 @@ AbstractController(cc) with AuthExtensionMethods {
     )
   }
 
-  def logout = Authenticate().async { implicit request =>
+  def logout = Action.async { implicit request =>
     Future.successful(
       Ok(views.html.index("Your new application is ready."))
         .discardingCookies(DiscardingCookie("AWSELBAuthSessionCookie-1"))
