@@ -19,7 +19,7 @@ AbstractController(cc) with AuthExtensionMethods {
 
   def ping = Action async {
     Future.successful(
-      OK("ping ok")
+      Ok("ping ok")
     )
   }
 
