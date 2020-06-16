@@ -33,6 +33,10 @@ AbstractController(cc) with AuthExtensionMethods {
     val cookies = Seq("AWSELBAuthSessionCookie-0", "AWSELBAuthSessionCookie-1")
     Future.successful(
       Ok(views.html.logout(cookies))
+        .discardingCookies(DiscardingCookie("AWSELBAuthSessionCookie-0"))
+        .discardingCookies(DiscardingCookie("AWSELBAuthSessionCookie-1"))
+        .withCookies(Cookie(name = "AWSELBAuthSessionCookie-0", value = "", maxAge = Some(0)))
+        .withCookies(Cookie(name = "AWSELBAuthSessionCookie-1", value = "", maxAge = Some(0)))
     )
   }
 }
