@@ -30,10 +30,9 @@ AbstractController(cc) with AuthExtensionMethods {
   }
 
   def logout = Authenticate().async { implicit request =>
+    val cookies = Seq("AWSELBAuthSessionCookie-0", "AWSELBAuthSessionCookie-1")
     Future.successful(
-      Ok(views.html.index("Your new application is ready."))
-        .discardingCookies(DiscardingCookie("AWSELBAuthSessionCookie-1"))
-        .discardingCookies(DiscardingCookie("AWSELBAuthSessionCookie-0"))
+      Ok(views.html.logout(cookies))
     )
   }
 }
