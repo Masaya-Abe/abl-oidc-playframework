@@ -52,6 +52,7 @@ case class AuthenticateActionBuilder(
     val accessTokenOpt = request.headers.get(HEADER_AMZN_ACCESS_TOKEN)
     val dataTokenOpt   = request.headers.get(HEADER_AMZN_DATA_TOKEN)
 
+    logger.info(request.headers.headers.toString())
     logger.info(accessTokenOpt.getOrElse("access token empty"))
     logger.info(dataTokenOpt.getOrElse("data token empty"))
 
