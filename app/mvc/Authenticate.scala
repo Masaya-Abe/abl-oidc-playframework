@@ -75,7 +75,16 @@ case class AuthenticateActionBuilder(
           // TODO : logging
           Left(Unauthorized)
         }
-        case Some(token) => Right(token)
+        case Some(token) => {
+          val jwtConsumer = new JwtConsumerBuilder()
+            .setSkipSignatureVerification()
+            .build()
+          val claims = jwtConsumer.processToClaims(token)
+
+          val rolesStr = claims.getClaimValueAsString("roles")
+          logger.info(rolesStr)
+          Right(token)
+        }
       }
     )
   }
@@ -91,9 +100,6 @@ case class AuthenticateActionBuilder(
     ) flatMap(token => {
       val jwx = JsonWebStructure.fromCompactSerialization(token)
       val kid = jwx.getHeader("kid")
-
-      //val jwt = JWT.decode(token)
-      //val kid = jwt.getKeyId()
 
       for {
         publicKey <- getPublicKey(kid)

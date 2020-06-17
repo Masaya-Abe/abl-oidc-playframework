@@ -33,7 +33,6 @@ libraryDependencies ++= Seq(
   ws,
   specs2 % Test,
   guice,
-  "com.auth0" % "java-jwt" % "3.10.3",
   "org.bitbucket.b_c" % "jose4j" % "0.7.1",
   "org.typelevel" %% "cats-core" % "2.0.0"
 )
