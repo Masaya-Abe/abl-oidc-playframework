@@ -78,6 +78,7 @@ case class AuthenticateActionBuilder(
         case Some(token) => {
           val jwtConsumer = new JwtConsumerBuilder()
             .setSkipSignatureVerification()
+            .setSkipAllValidators()
             .build()
           val claims = jwtConsumer.processToClaims(token)
 
